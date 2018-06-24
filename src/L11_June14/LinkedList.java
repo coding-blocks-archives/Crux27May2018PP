@@ -490,13 +490,14 @@ public class LinkedList {
 
 	}
 
-	public void mergeSort() {
+	public void mergeSort() throws Exception {
 
 		if (this.size == 1) {
 			return;
 		}
 
-		Node mid = midNode();
+		// Node mid = midNode();
+		Node mid = getNodeAt((size - 1) / 2);
 		Node midn = mid.next;
 
 		LinkedList fh = new LinkedList();
