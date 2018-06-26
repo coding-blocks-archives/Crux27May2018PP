@@ -30,7 +30,7 @@ public class TnSOps {
 
 		// pattern(0, 0, 5);
 
-		sudukoSolver(board, 0, 0);
+		// sudukoSolver(board, 0, 0);
 
 		// for (int i = 0; i < board.length; i++) {
 		// for (int j = 0; j < board[0].length; j++) {
@@ -39,6 +39,8 @@ public class TnSOps {
 		//
 		// System.out.println();
 		// }
+
+		nknights(new boolean[4][4], 0, 0, "", 0);
 	}
 
 	public static void printGrid(int[][] board) {
@@ -329,7 +331,7 @@ public class TnSOps {
 
 				System.out.println();
 			}
-			
+
 			System.out.println();
 			return true;
 		}
@@ -403,6 +405,32 @@ public class TnSOps {
 			}
 		}
 		return true;
+	}
+
+	public static void nknights(boolean[][] board, int row, int col, String asf, int kpsf) {
+
+		if (kpsf == board.length) {
+			System.out.println(asf);
+			return;
+		}
+
+		for (int c = col; c < board[0].length; c++) {
+
+			board[row][c] = true;
+			nknights(board, row, c + 1, asf + "{" + row + "-" + c + "}", kpsf + 1);
+			board[row][c] = false;
+
+		}
+
+		for (int r = row + 1; r < board.length; r++) {
+
+			for (int c = 0; c < board[0].length; c++) {
+				board[r][c] = true;
+				nknights(board, r, c + 1, asf + "{" + r + "-" + c + "}", kpsf + 1);
+				board[r][c] = false;
+			}
+		}
+
 	}
 
 }
