@@ -447,7 +447,7 @@ public class LinkedList {
 		n3.next = n4;
 		n4.next = n5;
 		n5.next = n6;
-		n6.next = n2;
+		n6.next = n4;
 
 		this.head = n1;
 		this.tail = n6;
@@ -520,6 +520,43 @@ public class LinkedList {
 		this.head = merged.head;
 		this.tail = merged.tail;
 		this.size = merged.size;
+
+	}
+
+	public void cycleRemoval() {
+
+		Node slow = this.head;
+		Node fast = this.head;
+
+		// detect the loop
+		while (fast != null && fast.next != null) {
+
+			slow = slow.next;
+			fast = fast.next.next;
+
+			if (slow == fast) {
+				break;
+			}
+
+		}
+
+		// if cycle present then only remove the loop
+		if (slow == fast) {
+			Node startLL = this.head;
+			Node loopLL = slow;
+
+			while (startLL.next != loopLL.next) {
+
+				startLL = startLL.next;
+				loopLL = loopLL.next;
+			}
+
+			loopLL.next = null;
+			tail = loopLL;
+
+		}else {
+			System.out.println("Loop not present");
+		}
 
 	}
 

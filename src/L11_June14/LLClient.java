@@ -41,6 +41,11 @@ public class LLClient {
 		list.mergeSort();
 		list.display();
 
+		// list.createDummyList();
+		// list.display();
+		list.cycleRemoval();
+		list.display();
+
 	}
 
 }

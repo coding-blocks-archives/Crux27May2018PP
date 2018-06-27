@@ -25,10 +25,14 @@ public class GTClient {
 		// gt.display();
 		// gt.preorder();
 
-		gt.levelorderRecursive();
-		gt.levelorderIterative();
-		gt.levelorderlw();
-		gt.levelorderzz();
+		// gt.levelorderRecursive();
+		// gt.levelorderIterative();
+		gt.levelorderlwIteractive();
+		gt.levelorderzzIterative();
+
+		// gt.levelorderzzRecursive();
+
+		gt.multiSolver(10);
 	}
 
 }

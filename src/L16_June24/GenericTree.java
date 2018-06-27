@@ -302,7 +302,7 @@ public class GenericTree {
 
 	}
 
-	public void levelorderlw() {
+	public void levelorderlwIteractive() {
 
 		LinkedList<Node> queue = new LinkedList<>();
 		LinkedList<Node> helper = new LinkedList<>();
@@ -329,7 +329,7 @@ public class GenericTree {
 
 	}
 
-	public void levelorderzz() {
+	public void levelorderzzIterative() {
 
 		int count = 0;
 		LinkedList<Node> queue = new LinkedList<>();
@@ -363,40 +363,143 @@ public class GenericTree {
 
 	}
 
-	public void levelorderzz1() {
+	public void rightView() {
 
-		int count = 0;
-		LinkedList<Node> queue = new LinkedList<>();
-		LinkedList<Node> stack = new LinkedList<>();
-		LinkedList<Node> s = new LinkedList<>();
+		int th = this.ht();
+		for (int i = 0; i <= th; i++) {
+			ArrayList<Integer> list = new ArrayList<>();
+			printAtLevel(0, i, this.root, list);
+			System.out.println(list.get(list.size() - 1));
+		}
+		System.out.println();
+	}
 
-		queue.addLast(this.root);
+	public void printAtLevel(int level, int ht, Node node, ArrayList<Integer> list) {
 
-		while (!queue.isEmpty()) {
+		if (level == ht) {
+			list.add(node.data);
+			return;
+		}
 
-			Node rn = queue.removeFirst();
+		for (Node child : node.children) {
+			printAtLevel(level + 1, ht, child, list);
+		}
+	}
 
-			System.out.print(rn.data + " ");
+	public void levelorderzzRecursive() {
 
-			if (count % 2 == 0) {
-				for (Node child : rn.children) {
-					stack.addFirst(child);
+		int th = this.ht();
+		for (int i = 0; i <= th; i++) {
+			ArrayList<Integer> list = new ArrayList<>();
+			printAtLevel(0, i, this.root, list);
+
+			if (i % 2 == 0) {
+				for (int j = 0; j < list.size(); j++) {
+					System.out.print(list.get(j) + " ");
 				}
 			} else {
-				for (int i = rn.children.size() - 1; i >= 0; i--) {
-					stack.addFirst(rn.children.get(i));
+				for (int j = list.size() - 1; j >= 0; j--) {
+					System.out.print(list.get(j) + " ");
 				}
 			}
-			if (queue.isEmpty()) {
-				System.out.println();
-				queue = stack;
-				stack = new LinkedList<>();
-				count++;
-			}
+			System.out.println();
+		}
+		System.out.println();
+	}
 
+	private class HeapMover {
+		int size = 0;
+		int max = Integer.MIN_VALUE;
+		int ht = 0;
+		boolean find = false;
+
+		Node pred;
+		Node succ;
+		Node jl;
+	}
+
+	public void multiSolver(int item) {
+
+		HeapMover mover = new HeapMover();
+
+		multiSolver(mover, this.root, 0, item);
+
+		System.out.println("Max:" + mover.max);
+		System.out.println("Size:" + mover.size);
+		System.out.println("Find:" + mover.find);
+		System.out.println("Ht:" + mover.ht);
+		System.out.println("Pred:" + (mover.pred == null ? "null" : mover.pred.data));
+		System.out.println("Succ:" + (mover.succ == null ? "null" : mover.succ.data));
+
+	}
+
+	private void multiSolver(HeapMover mover, Node node, int level, int item) {
+
+		mover.size++;
+
+		if (mover.ht < level) {
+			mover.ht = level;
+		}
+
+		if (mover.max < node.data) {
+			mover.max = node.data;
+		}
+
+		if (mover.find == true && mover.succ == null) {
+			mover.succ = node;
+		}
+
+		if (node.data == item) {
+			mover.find = true;
+		}
+
+		if (mover.find == false) {
+			mover.pred = node;
+		}
+
+		if (node.data > item) {
+
+			if (mover.jl == null || node.data < mover.jl.data) {
+				mover.jl = node;
+			}
+		}
+
+		for (Node child : node.children) {
+			multiSolver(mover, child, level + 1, item);
 		}
 
 	}
 
-	
+	public boolean isMirror(GenericTree other) {
+		return isMirror(this.root, other.root);
+	}
+
+	private boolean isMirror(Node tnode, Node onode) {
+
+		if (tnode.children.size() != onode.children.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < tnode.children.size(); i++) {
+
+			Node tc = tnode.children.get(i);
+			Node oc = onode.children.get(tnode.children.size() - 1 - i);
+
+			boolean rr = isMirror(tc, oc);
+
+			if (rr == false) {
+				return false;
+			}
+		}
+
+		return true;
+
+	}
+
+	public boolean isMirrorSS() {
+
+		return isMirror(root, root);
+
+	}
+
 }
