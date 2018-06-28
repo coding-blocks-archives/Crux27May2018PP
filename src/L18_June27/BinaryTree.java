@@ -295,12 +295,16 @@ public class BinaryTree {
 
 	private void preorder(Node node) {
 
-		if(node == null) {
-			return ;
+		if (node == null) {
+			return;
 		}
+		// self work
 		System.out.println(node.data);
 
+		// left
 		preorder(node.left);
+
+		// right
 		preorder(node.right);
 
 	}
