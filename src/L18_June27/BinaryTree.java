@@ -217,7 +217,7 @@ public class BinaryTree {
 
 	}
 
-	private class Pair {
+	private class DiaPair {
 
 		int diameter;
 		int height;
@@ -227,10 +227,10 @@ public class BinaryTree {
 		return diameter2(this.root).diameter;
 	}
 
-	private Pair diameter2(Node node) {
+	private DiaPair diameter2(Node node) {
 
 		if (node == null) {
-			Pair bp = new Pair();
+			DiaPair bp = new DiaPair();
 			bp.height = -1;
 			bp.diameter = 0;
 
@@ -238,10 +238,10 @@ public class BinaryTree {
 		}
 
 		// left pair ht and dia
-		Pair lp = diameter2(node.left);
-		Pair rp = diameter2(node.right);
+		DiaPair lp = diameter2(node.left);
+		DiaPair rp = diameter2(node.right);
 
-		Pair sp = new Pair();
+		DiaPair sp = new DiaPair();
 		sp.height = Math.max(lp.height, rp.height) + 1;
 		int lpd = lp.diameter;
 		int rpd = rp.diameter;
@@ -350,6 +350,59 @@ public class BinaryTree {
 			}
 
 		}
+
+	}
+
+	private class BSTPair {
+
+		Node largestBSTNode;
+		int size;
+		int max = Integer.MIN_VALUE;
+		int min = Integer.MAX_VALUE;
+		boolean isBST = true;
+
+	}
+
+	public void largestBST() {
+
+		BSTPair pair = largestBST(root);
+		System.out.println(pair.largestBSTNode.data);
+		System.out.println(pair.size);
+	}
+
+	private BSTPair largestBST(Node node) {
+
+		if (node == null) {
+			BSTPair bp = new BSTPair();
+			return bp;
+		}
+		BSTPair lp = largestBST(node.left);
+		BSTPair rp = largestBST(node.right);
+
+		BSTPair sp = new BSTPair();
+
+		sp.max = Math.max(node.data, Math.max(lp.max, rp.max));
+		sp.min = Math.min(node.data, Math.min(lp.min, rp.min));
+
+		if (lp.isBST && rp.isBST && node.data > lp.max && node.data < rp.min) {
+
+			sp.largestBSTNode = node;
+			sp.isBST = true;
+			sp.size = lp.size + rp.size + 1;
+		} else {
+
+			sp.isBST = false;
+
+			if (lp.size >= rp.size) {
+				sp.largestBSTNode = lp.largestBSTNode;
+				sp.size = lp.size;
+			} else {
+				sp.largestBSTNode = rp.largestBSTNode;
+				sp.size = rp.size;
+			}
+		}
+
+		return sp;
 
 	}
 
