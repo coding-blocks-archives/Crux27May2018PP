@@ -20,6 +20,7 @@ public class Heap {
 		return this.size() == 0;
 	}
 
+	// O(logn)
 	public void add(int item) {
 
 		this.data.add(item);
@@ -46,6 +47,7 @@ public class Heap {
 		data.set(j, ith);
 	}
 
+	// O(logn)
 	public int remove() {
 
 		swap(0, this.data.size() - 1);
@@ -76,6 +78,7 @@ public class Heap {
 
 	}
 
+	// O(1)
 	public int get() {
 		return this.data.get(0);
 	}
