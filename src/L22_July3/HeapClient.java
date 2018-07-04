@@ -1,5 +1,7 @@
 package L22_July3;
 
+import java.util.ArrayList;
+
 import L21_July1.GenericFxn.Car;
 
 /**
@@ -53,11 +55,119 @@ public class HeapClient {
 		heapgi.add(70);
 		heapgi.add(1);
 
-
 		for (int i = 1; i <= 5; i++) {
 			System.out.println(heapgi.remove());
 		}
 
+		ArrayList<ArrayList<Integer>> lists = new ArrayList<>();
+		ArrayList<Integer> list1 = new ArrayList<>();
+		list1.add(2);
+		list1.add(3);
+		list1.add(5);
+		list1.add(10);
+		list1.add(15);
+		ArrayList<Integer> list2 = new ArrayList<>();
+		list2.add(15);
+		list2.add(100);
+		list2.add(200);
+		list2.add(300);
+		ArrayList<Integer> list3 = new ArrayList<>();
+		list3.add(6);
+		list3.add(8);
+		list3.add(9);
+		list3.add(10);
+
+		lists.add(list1);
+		lists.add(list2);
+		lists.add(list3);
+
+		System.out.println(mergeKSortedList(lists));
+
+		ArrayList<Integer> list = new ArrayList<>();
+
+		list.add(10);
+		list.add(100);
+		list.add(20);
+		list.add(30);
+		list.add(5);
+
+		System.out.println(kLargestElements(list, 3));
+		
+		list.clear();
+
+	}
+
+	private static class Pair implements Comparable<Pair> {
+
+		int data;
+		int listNo;
+		int itemNo;
+
+		@Override
+		public int compareTo(Pair o) {
+			return o.data - this.data;
+		}
+	}
+
+	public static ArrayList<Integer> mergeKSortedList(ArrayList<ArrayList<Integer>> lists) {
+
+		HeapGeneric<Pair> heap = new HeapGeneric<>();
+
+		for (int i = 0; i < lists.size(); i++) {
+			Pair np = new Pair();
+			np.data = lists.get(i).get(0);
+			np.itemNo = 0;
+			np.listNo = i;
+
+			heap.add(np);
+		}
+
+		ArrayList<Integer> ans = new ArrayList<>();
+
+		while (!heap.isEmpty()) {
+
+			Pair rp = heap.remove();
+			ans.add(rp.data);
+
+			rp.itemNo++;
+
+			if (rp.itemNo < lists.get(rp.listNo).size()) {
+				rp.data = lists.get(rp.listNo).get(rp.itemNo);
+				heap.add(rp);
+			}
+
+		}
+
+		return ans;
+
+	}
+
+	public static ArrayList<Integer> kLargestElements(ArrayList<Integer> list, int k) {
+
+		Heap heap = new Heap();
+
+		for (int i = 0; i < k; i++) {
+			heap.add(list.get(i));
+		}
+
+		for (int i = k; i < list.size(); i++) {
+
+			int tp = heap.get();
+
+			if (list.get(i) > tp) {
+				heap.remove();
+				heap.add(list.get(i));
+			}
+
+		}
+
+		ArrayList<Integer> ans = new ArrayList<>();
+
+		while (!heap.isEmpty()) {
+			ans.add(heap.remove());
+		}
+
+		return ans;
 	}
 
 }
