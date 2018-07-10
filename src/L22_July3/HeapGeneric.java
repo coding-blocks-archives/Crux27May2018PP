@@ -1,6 +1,7 @@
 package L22_July3;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Garima Chhikara
@@ -11,9 +12,11 @@ import java.util.ArrayList;
 public class HeapGeneric<T extends Comparable<T>> {
 
 	ArrayList<T> data = new ArrayList<>();
+	HashMap<T, Integer> indexing = new HashMap<>();
 
 	public int size() {
 		return data.size();
+
 	}
 
 	public boolean isEmpty() {
@@ -23,6 +26,7 @@ public class HeapGeneric<T extends Comparable<T>> {
 	public void add(T item) {
 
 		this.data.add(item);
+		this.indexing.put(item, data.size() - 1);
 		upheapify(this.data.size() - 1);
 	}
 
@@ -44,12 +48,17 @@ public class HeapGeneric<T extends Comparable<T>> {
 
 		data.set(i, jth);
 		data.set(j, ith);
+
+		indexing.put(ith, j);
+		indexing.put(jth, i);
 	}
 
 	public T remove() {
 
 		swap(0, this.data.size() - 1);
 		T rv = data.remove(this.size() - 1);
+		indexing.remove(rv);
+
 		dowheapify(0);
 
 		return rv;
@@ -84,11 +93,20 @@ public class HeapGeneric<T extends Comparable<T>> {
 		return t.compareTo(o);
 	}
 
+	public void updatePriority(T pair) {
+
+		// int idx = 0;
+		//
+		// for (int i = 0; i < data.size(); i++) {
+		// if (data.get(i) == pair) {
+		// idx = i;
+		// }
+		//
+		// }
+
+		int idx = indexing.get(pair);
+
+		upheapify(idx);
+	}
+
 }
-
-
-
-
-
-
-

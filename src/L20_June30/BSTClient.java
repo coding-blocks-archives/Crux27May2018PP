@@ -22,13 +22,15 @@ public class BSTClient {
 
 		// bst.replaceWithSumOfLarger();
 
-		bst.display();
+		// bst.display();
 
 		bst.add(8);
-		bst.display();
-		
-		bst.remove(10);
-		bst.display();
+		// bst.display();
+		//
+		// bst.remove(10);
+		// bst.display();
+
+		bst.printkfar(4, 20);
 
 	}
 

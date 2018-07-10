@@ -2,9 +2,8 @@ package Doubts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
-public class june20doubts {
+public class Doubts_June20 {
 	static int invert = 0;
 
 	public static void main(String[] args) {

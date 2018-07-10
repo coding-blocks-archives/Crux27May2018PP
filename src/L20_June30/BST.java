@@ -230,12 +230,16 @@ public class BST {
 
 	public void remove(int item) {
 
-		if (this.root.left == null && this.root.right != null) {
-			this.root = this.root.right;
-		} else if (this.root.left != null && this.root.right == null) {
-			this.root = this.root.left;
-		} else if (this.root.left == null && this.root.right == null) {
-			return;
+		if (root.data == item) {
+			if (this.root.left == null && this.root.right != null) {
+				this.root = this.root.right;
+			} else if (this.root.left != null && this.root.right == null) {
+				this.root = this.root.left;
+			} else if (this.root.left == null && this.root.right == null) {
+				return;
+			} else {
+				remove(this.root, null, item);
+			}
 		} else {
 			remove(this.root, null, item);
 		}
@@ -279,6 +283,65 @@ public class BST {
 			}
 
 		}
+
+	}
+
+	public void printkfar(int k, int target) {
+		printkfar(this.root, k, target);
+	}
+
+	private int printkfar(Node node, int k, int target) {
+
+		if (node == null) {
+			return -1;
+		}
+
+		if (node.data == target) {
+			printkdown(node, k);
+			return 0;
+		}
+
+		int ld = printkfar(node.left, k, target);
+
+		if (ld != -1) {
+
+			if (ld + 1 == k) {
+				System.out.println(node.data);
+			}
+
+			printkdown(node.right, k - ld - 2);
+
+			return ld + 1;
+		}
+
+		int rd = printkfar(node.right, k, target);
+
+		if (rd != -1) {
+
+			if (rd + 1 == k) {
+				System.out.println(node.data);
+			}
+
+			printkdown(node.left, k - rd - 2);
+
+			return rd + 1;
+		}
+
+		return -1;
+	}
+
+	private void printkdown(Node node, int k) {
+
+		if (node == null) {
+			return;
+		}
+
+		if (k == 0) {
+			System.out.println(node.data);
+		}
+
+		printkdown(node.left, k - 1);
+		printkdown(node.right, k - 1);
 
 	}
 

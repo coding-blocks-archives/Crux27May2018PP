@@ -143,12 +143,4 @@ public class RecursionPrint {
 		targetSum(arr, vidx + 1, pSum + arr[vidx], ans + " " + arr[vidx], target);
 	}
 
-	public static int coin(int n, String ans) {
-
-	}
-
-	public static int coinNoConsecutiveHead(int n, String ans, boolean wasLastHeadIncluded) {
-
-	}
-
 }

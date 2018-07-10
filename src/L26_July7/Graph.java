@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import L22_July3.HeapGeneric;
+
 /**
  * @author Garima Chhikara
  * @email garima.chhikara@codingblocks.com
@@ -140,6 +142,8 @@ public class Graph {
 		String vname;
 		String psf;
 		Vertex vtx;
+
+		String color;
 	}
 
 	public boolean BFS(String src, String dst) {
@@ -355,6 +359,333 @@ public class Graph {
 			}
 
 		}
+
+	}
+
+	public boolean isCyclic() {
+
+		HashMap<String, Boolean> processed = new HashMap<>();
+
+		LinkedList<Pair> queue = new LinkedList<>();
+
+		for (String key : vertices.keySet()) {
+
+			if (processed.containsKey(key)) {
+				continue;
+			}
+
+			// 1. create a new pair and put in queue
+			Pair sp = new Pair();
+			sp.vname = key;
+			sp.psf = key;
+			sp.vtx = vertices.get(key);
+
+			queue.addLast(sp);
+
+			// 2. while queue is not empty
+			while (!queue.isEmpty()) {
+
+				// 2.1 element remove
+				Pair rp = queue.removeFirst();
+
+				if (processed.containsKey(rp.vname)) {
+					return true;
+				}
+
+				// 2.2 processing
+				processed.put(rp.vname, true);
+
+				// 2.4 nbrs
+				for (String nbr : rp.vtx.nbrs.keySet()) {
+
+					// process only unprocessed nbrs
+					if (!processed.containsKey(nbr)) {
+						Pair np = new Pair();
+						np.vname = nbr;
+						np.psf = rp.psf + nbr;
+						np.vtx = vertices.get(nbr);
+						queue.addLast(np);
+					}
+
+				}
+
+			}
+
+		}
+
+		return false;
+
+	}
+
+	public boolean isConnected() {
+
+		HashMap<String, Boolean> processed = new HashMap<>();
+
+		LinkedList<Pair> queue = new LinkedList<>();
+
+		int flag = 0;
+
+		for (String key : vertices.keySet()) {
+
+			if (processed.containsKey(key)) {
+				continue;
+			}
+
+			flag++;
+			// 1. create a new pair and put in queue
+			Pair sp = new Pair();
+			sp.vname = key;
+			sp.psf = key;
+			sp.vtx = vertices.get(key);
+
+			queue.addLast(sp);
+
+			// 2. while queue is not empty
+			while (!queue.isEmpty()) {
+
+				// 2.1 element remove
+				Pair rp = queue.removeFirst();
+
+				if (processed.containsKey(rp.vname)) {
+					continue;
+				}
+
+				// 2.2 processing
+				processed.put(rp.vname, true);
+
+				// 2.4 nbrs
+				for (String nbr : rp.vtx.nbrs.keySet()) {
+
+					// process only unprocessed nbrs
+					if (!processed.containsKey(nbr)) {
+						Pair np = new Pair();
+						np.vname = nbr;
+						np.psf = rp.psf + nbr;
+						np.vtx = vertices.get(nbr);
+						queue.addLast(np);
+					}
+
+				}
+
+			}
+
+		}
+
+		if (flag > 1) {
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
+	public boolean isTree() {
+		return isConnected() && !isCyclic();
+	}
+
+	public ArrayList<ArrayList<String>> getCC() {
+
+		ArrayList<ArrayList<String>> ans = new ArrayList<>();
+
+		HashMap<String, Boolean> processed = new HashMap<>();
+
+		LinkedList<Pair> queue = new LinkedList<>();
+
+		for (String key : vertices.keySet()) {
+
+			if (processed.containsKey(key)) {
+				continue;
+			}
+
+			ArrayList<String> subans = new ArrayList<>();
+
+			// 1. create a new pair and put in queue
+			Pair sp = new Pair();
+			sp.vname = key;
+			sp.psf = key;
+			sp.vtx = vertices.get(key);
+
+			queue.addLast(sp);
+
+			// 2. while queue is not empty
+			while (!queue.isEmpty()) {
+
+				// 2.1 element remove
+				Pair rp = queue.removeFirst();
+
+				if (processed.containsKey(rp.vname)) {
+					continue;
+				}
+
+				// 2.2 processing
+				processed.put(rp.vname, true);
+
+				// 2.3 add in subans
+				subans.add(rp.vname);
+
+				// 2.4 nbrs
+				for (String nbr : rp.vtx.nbrs.keySet()) {
+
+					// process only unprocessed nbrs
+					if (!processed.containsKey(nbr)) {
+						Pair np = new Pair();
+						np.vname = nbr;
+						np.psf = rp.psf + nbr;
+						np.vtx = vertices.get(nbr);
+						queue.addLast(np);
+					}
+
+				}
+
+			}
+
+			ans.add(subans);
+
+		}
+
+		return ans;
+
+	}
+
+	public boolean isBipartite() {
+
+		HashMap<String, String> processed = new HashMap<>();
+
+		LinkedList<Pair> queue = new LinkedList<>();
+
+		for (String key : vertices.keySet()) {
+
+			if (processed.containsKey(key)) {
+				continue;
+			}
+
+			// 1. create a new pair and put in queue
+			Pair sp = new Pair();
+			sp.vname = key;
+			sp.psf = key;
+			sp.vtx = vertices.get(key);
+			sp.color = "r";
+
+			queue.addLast(sp);
+
+			// 2. while queue is not empty
+			while (!queue.isEmpty()) {
+
+				// 2.1 element remove
+				Pair rp = queue.removeFirst();
+
+				if (processed.containsKey(rp.vname)) {
+
+					String nc = rp.color;
+					String oc = processed.get(rp.vname);
+
+					if (!nc.equals(oc)) {
+						return false;
+					}
+
+					continue;
+				}
+
+				// 2.2 processing
+				processed.put(rp.vname, rp.color);
+
+				// 2.4 nbrs
+				for (String nbr : rp.vtx.nbrs.keySet()) {
+
+					// process only unprocessed nbrs
+					if (!processed.containsKey(nbr)) {
+						Pair np = new Pair();
+						np.vname = nbr;
+						np.psf = rp.psf + nbr;
+						np.vtx = vertices.get(nbr);
+						np.color = rp.color.equals("r") ? "g" : "r";
+						queue.addLast(np);
+					}
+
+				}
+
+			}
+
+		}
+
+		return true;
+
+	}
+
+	private class PrimsPair implements Comparable<PrimsPair> {
+
+		String vtxname;
+		String acqvertexname;
+		int cost;
+
+		@Override
+		public int compareTo(PrimsPair o) {
+			return o.cost - this.cost;
+		}
+	}
+
+	public Graph prims() {
+
+		HeapGeneric<PrimsPair> heap = new HeapGeneric<>();
+		HashMap<String, PrimsPair> processed = new HashMap<>();
+		Graph mst = new Graph();
+
+		// make pairs and put in heap
+		for (String key : vertices.keySet()) {
+
+			PrimsPair np = new PrimsPair();
+			np.vtxname = key;
+			np.acqvertexname = null;
+			np.cost = Integer.MAX_VALUE;
+
+			// put in heap ans processed hash map
+			heap.add(np);
+			processed.put(key, np);
+
+		}
+
+		// work till heap is not empty
+		while (!heap.isEmpty()) {
+
+			// remove a pair from heap and processed hash map
+			PrimsPair rp = heap.remove();
+			processed.remove(rp.vtxname);
+
+			// add to your mst
+			if (rp.acqvertexname == null) {
+				mst.addVertex(rp.vtxname);
+			} else {
+				mst.addVertex(rp.vtxname);
+				mst.addEdge(rp.acqvertexname, rp.vtxname, rp.cost);
+			}
+
+			// do work for nbrs
+			for (String nbr : vertices.get(rp.vtxname).nbrs.keySet()) {
+
+				// only those nbrs which are present in heap
+				if (processed.containsKey(nbr)) {
+
+					// find the old cost and new cost
+					int oc = processed.get(nbr).cost;
+					int nc = vertices.get(nbr).nbrs.get(rp.vtxname);
+
+					// update only when nc < oc
+					if (nc < oc) {
+
+						// update the p[air of heap
+						processed.get(nbr).cost = nc;
+						processed.get(nbr).acqvertexname = rp.vtxname;
+
+						// heap
+						heap.updatePriority(processed.get(nbr));
+					}
+
+				}
+			}
+
+		}
+
+		return mst;
 
 	}
 
